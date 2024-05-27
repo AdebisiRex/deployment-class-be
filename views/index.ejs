@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <h1>Upload Files in Node JS</h1>
+
+    <form
+      id="ourForm"
+      class="p-3 mx-auto col-7 shadow-sm my-5 border rounded-3"
+    >
+      <h1>Uplaod Image form</h1>
+      <div class="mb-3">
+        <label for="">FirstName</label>
+        <input class="form-control" type="text" name="firstName" />
+      </div>
+      <div class="mb-3">
+        <label for="">LastName</label>
+        <input class="form-control" type="text" name="lastName" />
+      </div>
+      <div class="mb-3">
+        <label for="">Image</label>
+        <input id="fileInput" name="file" class="form-control" type="file" accept="image/*" />
+      </div>
+      <button class="btn btn-danger">Submit</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("ourForm")
+        .addEventListener("submit", (e) => submitForm(e));
+
+      const submitForm = async (e) => {
+        try {
+          e.preventDefault();
+
+          const myFile = document.getElementById("fileInput").files[0]
+
+          console.log(myFile)
+          const form = document.getElementById("ourForm");
+
+          const formData = new FormData();
+        //   const fromProps = Object.fromEntries(formData);
+        formData.append("file", myFile)
+
+       
+          console.log(formData);
+          await fetch("/upload-image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: JSON.stringify(formData),
+          });
+
+          console.log("submitted");
+        } catch (err) {
+          console.log(err);
+        }
+      };
+    </script>
+  </body>
+</html>
